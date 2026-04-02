@@ -1,0 +1,297 @@
+/* ── Krishi Equipment Rental — Clean Simple Theme ── */
+
+:root {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --primary: #2e7d32;
+    --primary-dark: #1b5e20;
+    --accent: #ff8f00;
+    --danger: #c62828;
+    --border: #e0e0e0;
+    --radius: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; display: block; }
+
+.container {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+/* ── Header ── */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #fff;
+    border-bottom: 2px solid var(--primary);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.nav-wrap, .footer-wrap, .section-head, .card-actions, .card-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.nav-wrap { padding: 0.75rem 0; flex-wrap: wrap; }
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--text);
+}
+
+.brand strong, h1, h2, h3 { font-weight: 700; }
+.brand small { display: block; color: var(--muted); font-size: 0.8rem; }
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+/* ── Nav ── */
+.nav-links, .nav-actions, .stats-grid, .card-grid, .grid-two,
+.filter-bar, .pay-options, .info-card-grid, .split-layout {
+    display: grid;
+    gap: 1rem;
+}
+
+.nav-links { grid-auto-flow: column; align-items: center; }
+.nav-links a {
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+.nav-links a:hover { background: #e8f5e9; text-decoration: none; }
+
+.nav-actions { grid-auto-flow: column; align-items: center; }
+
+.user-pill, .badge {
+    border-radius: 4px;
+    background: #e8f5e9;
+    color: var(--primary-dark);
+    padding: 0.4rem 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+/* ── Page Shell ── */
+.page-shell { padding: 2rem 0 3rem; }
+
+/* ── Cards & Panels ── */
+.hero, .panel, .stat-card, .equipment-card, .simple-card, .mini-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.hero { padding: 1.5rem; }
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 1.5rem;
+}
+
+.hero-copy h1, .page-intro h1 {
+    font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+    line-height: 1.2;
+    margin: 0.3rem 0 0.6rem;
+}
+
+.page-intro { margin-bottom: 1.5rem; }
+
+.eyebrow {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    background: #fff3e0;
+    color: #e65100;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.panel { padding: 1.25rem; }
+
+.helper-text, .empty-copy, .site-footer p, .meta-list,
+.equipment-body p, .page-intro p { color: var(--muted); }
+
+/* ── Stats ── */
+.stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 1.5rem;
+}
+
+.stat-card { padding: 1.25rem; }
+.stat-card span { color: var(--muted); font-weight: 600; font-size: 0.85rem; }
+.stat-card h2 { font-size: 2rem; margin: 0.3rem 0 0; color: var(--primary); }
+
+.alert-card { border-left: 4px solid var(--accent); }
+
+/* ── Layouts ── */
+.split-layout { grid-template-columns: 0.85fr 1.15fr; align-items: start; }
+.grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-span-2 { grid-column: 1 / -1; }
+
+/* ── Forms ── */
+.field { display: grid; gap: 0.35rem; margin-bottom: 0.9rem; }
+.field label { font-weight: 600; font-size: 0.9rem; }
+
+input, select, textarea, button { font: inherit; }
+input, select, textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    padding: 0.7rem 0.8rem;
+    color: var(--text);
+}
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: -1px;
+    border-color: var(--primary);
+}
+
+/* Date inputs need explicit height and clickable calendar icon */
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+    min-height: 42px;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* ── Buttons ── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); text-decoration: none; }
+
+.btn-outline { border-color: var(--border); background: #fff; color: var(--text); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { opacity: 0.9; text-decoration: none; }
+
+.btn-small { padding: 0.5rem 0.7rem; font-size: 0.82rem; }
+.btn-block { width: 100%; }
+
+/* ── Equipment Cards ── */
+.card-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+.equipment-card, .simple-card, .mini-card { overflow: hidden; }
+.equipment-card img { width: 100%; height: 200px; object-fit: cover; }
+.equipment-body, .simple-card, .mini-card { padding: 1rem; }
+.compact-card img { height: 180px; }
+
+.meta-list { margin: 0; padding-left: 1rem; line-height: 1.8; }
+
+/* ── Tables ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.8rem 0.7rem; border-bottom: 1px solid var(--border); }
+th { background: #f9f9f9; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.02em; }
+
+/* ── Filters ── */
+.filter-bar { grid-template-columns: 1.2fr 0.7fr 0.7fr auto; align-items: end; }
+.filter-actions { display: flex; gap: 0.6rem; }
+
+/* ── Summary boxes ── */
+.summary-box, .payment-ui, .equipment-summary {
+    background: #fafafa;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 1rem;
+}
+
+.pay-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pay-card {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+}
+
+.checkbox-line { display: flex; align-items: flex-start; gap: 0.6rem; margin: 0.8rem 0; }
+
+/* ── Flash messages ── */
+.flash-stack { display: grid; gap: 0.6rem; margin-bottom: 1rem; }
+.flash {
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    border-left: 4px solid;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.flash-success { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+.flash-danger  { background: #ffebee; color: #c62828; border-color: #c62828; }
+.flash-warning { background: #fff8e1; color: #e65100; border-color: #ff8f00; }
+.flash-info    { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+
+/* ── Empty state ── */
+.empty-state { text-align: center; padding: 3rem 1.5rem; }
+
+/* ── Footer ── */
+.site-footer { border-top: 1px solid var(--border); background: #fff; }
+.footer-wrap { padding: 1rem 0 1.5rem; }
+
+/* ── Mini cards ── */
+.mini-card { border-left: 3px solid var(--primary); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .hero-grid, .split-layout, .stats-grid, .filter-bar, .grid-two, .pay-options {
+        grid-template-columns: 1fr;
+    }
+    .nav-links, .nav-actions { grid-auto-flow: row; justify-items: start; }
+    .nav-wrap, .footer-wrap, .section-head, .card-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
