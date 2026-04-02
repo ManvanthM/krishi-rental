@@ -29,6 +29,7 @@ app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 DB_CONFIG = {
     "host": os.environ.get("DB_HOST", "localhost"),
+    "port": int(os.environ.get("DB_PORT", 3306)),  # ✅ ADD THIS LINE
     "user": os.environ.get("DB_USER", "root"),
     "password": os.environ.get("DB_PASSWORD", ""),
     "database": os.environ.get("DB_NAME", "krishi_equipment_rental"),
