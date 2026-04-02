@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}My Rentals{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Farmer Module</span>
+    <h1>My Rentals</h1>
+    <p>Track current bookings, return requests, QC status, and refunds.</p>
+</section>
+
+<section class="card-grid">
+    {% for rental in rentals %}
+        <article class="equipment-card compact-card">
+            <img src="{{ url_for('uploaded_file', filename=rental.image) }}" alt="{{ rental.equipment_name }}">
+            <div class="equipment-body">
+                <div class="card-topline">
+                    <span class="badge badge-status">{{ rental.status }}</span>
+                    <span class="badge">{{ rental.producer_name }}</span>
+                </div>
+                <h2>{{ rental.equipment_name }}</h2>
+                <ul class="meta-list">
+                    <li>From: {{ rental.from_date }}</li>
+                    <li>To: {{ rental.to_date }}</li>
+                    <li>Total Days: {{ rental.total_days }}</li>
+                    <li>Total Rent: Rs. {{ '%.2f'|format(rental.total_rent) }}</li>
+                    <li>Deposit: Rs. {{ '%.2f'|format(rental.deposit) }}</li>
+                    <li>Payment: {{ rental.payment_method }}</li>
+                    <li>Fine: Rs. {{ '%.2f'|format(rental.fine_amount or 0) }}</li>
+                    <li>Damage Cost: Rs. {{ '%.2f'|format(rental.damage_cost or 0) }}</li>
+                    <li>Refund: Rs. {{ '%.2f'|format(rental.refund_amount or 0) }}</li>
+                </ul>
+                {% if rental.status == 'Rented' %}
+                    <form method="POST" action="{{ url_for('return_equipment', rental_id=rental.id) }}">
+                        <button type="submit" class="btn btn-primary btn-small">Return Equipment</button>
+                    </form>
+                {% endif %}
+            </div>
+        </article>
+    {% else %}
+        <article class="panel empty-state">
+            <p>You have not rented any equipment yet.</p>
+        </article>
+    {% endfor %}
+</section>
+{% endblock %}

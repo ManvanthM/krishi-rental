@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Manage Producers{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Admin Module</span>
+    <h1>Manage Producers</h1>
+    <p>Add new equipment owners and review all registered producers.</p>
+</section>
+
+<section class="split-layout">
+    <div class="panel">
+        <h2>Add Producer</h2>
+        <form method="POST" class="validated-form">
+            <div class="field">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" minlength="6" required>
+            </div>
+            <div class="field">
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" id="phone" maxlength="10" pattern="\d{10}" required>
+            </div>
+            <div class="field">
+                <label for="address">Address</label>
+                <textarea name="address" id="address" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Producer</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>All Producers</h2>
+        {% if producers %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producer in producers %}
+                            <tr>
+                                <td>{{ producer.name }}</td>
+                                <td>{{ producer.email }}</td>
+                                <td>{{ producer.phone }}</td>
+                                <td>{{ producer.address }}</td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('delete_producer', producer_id=producer.id) }}" onsubmit="return confirm('Delete this producer?');">
+                                        <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="empty-copy">No producers added yet.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

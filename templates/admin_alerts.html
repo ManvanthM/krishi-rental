@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Overdue Alerts{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Alert Center</span>
+    <h1>Farmers With Overdue Rentals</h1>
+    <p>These farmers have not returned equipment after the due date.</p>
+</section>
+
+<section class="panel">
+    {% if overdue_rentals %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Farmer</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Equipment</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Total Days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in overdue_rentals %}
+                        <tr>
+                            <td>{{ rental.farmer_name }}</td>
+                            <td>{{ rental.email }}</td>
+                            <td>{{ rental.phone }}</td>
+                            <td>{{ rental.equipment_name }}</td>
+                            <td>{{ rental.from_date }}</td>
+                            <td>{{ rental.to_date }}</td>
+                            <td>{{ rental.total_days }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-copy">No overdue equipment alerts right now.</p>
+    {% endif %}
+</section>
+{% endblock %}

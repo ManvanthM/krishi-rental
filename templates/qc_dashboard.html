@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}QC Dashboard{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Quality Checker Workspace</span>
+    <h1>QC Dashboard</h1>
+    <p>Inspect return requests, calculate fines and damage cost, and finalize deposit refunds.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span>Pending Returns</span>
+        <h2>{{ pending_returns }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Accepted Returns</span>
+        <h2>{{ accepted_returns }}</h2>
+    </article>
+    <article class="stat-card alert-card">
+        <span>Rejected Returns</span>
+        <h2>{{ rejected_returns }}</h2>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="section-head">
+        <h2>Next Step</h2>
+        <a class="btn btn-primary" href="{{ url_for('qc_returns') }}">Review Return Queue</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Page Not Found{% endblock %}
+{% block content %}
+<section class="panel empty-state">
+    <h1>404</h1>
+    <p>The page you are looking for is not available.</p>
+    <a class="btn btn-primary" href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}">Go Back</a>
+</section>
+{% endblock %}

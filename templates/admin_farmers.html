@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}View Farmers{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Admin Module</span>
+    <h1>Registered Farmers</h1>
+    <p>Review farmer contact details and Aadhaar information.</p>
+</section>
+
+<section class="panel">
+    {% if farmers %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Aadhaar</th>
+                        <th>Aadhaar File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for farmer in farmers %}
+                        <tr>
+                            <td>{{ farmer.name }}</td>
+                            <td>{{ farmer.email }}</td>
+                            <td>{{ farmer.phone }}</td>
+                            <td>{{ farmer.aadhaar }}</td>
+                            <td>
+                                {% if farmer.aadhaar_image %}
+                                    <a href="{{ url_for('uploaded_file', filename=farmer.aadhaar_image) }}" target="_blank">View Upload</a>
+                                {% else %}
+                                    Not Uploaded
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-copy">No farmers found.</p>
+    {% endif %}
+</section>
+{% endblock %}

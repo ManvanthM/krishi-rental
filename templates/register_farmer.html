@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Farmer Registration | Krishi Equipment Rental System{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Farmer Onboarding</span>
+    <h1>Create Farmer Account</h1>
+    <p>Register with Aadhaar details to access equipment listings from all producers.</p>
+</section>
+
+<section class="panel form-panel">
+    <form method="POST" enctype="multipart/form-data" class="validated-form" data-form-type="farmer-register">
+        <div class="grid-two">
+            <div class="field">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" minlength="6" required>
+            </div>
+            <div class="field">
+                <label for="phone">Phone Number</label>
+                <input type="text" name="phone" id="phone" maxlength="10" pattern="\d{10}" required>
+            </div>
+            <div class="field">
+                <label for="aadhaar">Aadhaar Number</label>
+                <input type="text" name="aadhaar" id="aadhaar" maxlength="12" pattern="\d{12}" required>
+            </div>
+            <div class="field">
+                <label for="aadhaar_image">Aadhaar Image</label>
+                <input type="file" name="aadhaar_image" id="aadhaar_image" accept=".png,.jpg,.jpeg,.webp,.pdf" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Register Farmer</button>
+    </form>
+</section>
+{% endblock %}

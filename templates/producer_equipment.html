@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Manage Equipment{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Producer Module</span>
+    <h1>Equipment Inventory</h1>
+    <p>Add, review, update, or remove equipment available for farmers.</p>
+</section>
+
+<section class="split-layout">
+    <div class="panel">
+        <h2>Add Equipment</h2>
+        <form method="POST" enctype="multipart/form-data" class="validated-form">
+            <div class="field">
+                <label for="name">Equipment Name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="4" required></textarea>
+            </div>
+            <div class="grid-two">
+                <div class="field">
+                    <label for="rent_per_day">Rent per Day (Rs.)</label>
+                    <input type="number" step="0.01" name="rent_per_day" id="rent_per_day" required>
+                </div>
+                <div class="field">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" name="quantity" id="quantity" min="0" required>
+                </div>
+                <div class="field">
+                    <label for="max_days">Max Rental Days</label>
+                    <input type="number" name="max_days" id="max_days" min="1" required>
+                </div>
+                <div class="field">
+                    <label for="deposit">Security Deposit (Rs.)</label>
+                    <input type="number" step="0.01" name="deposit" id="deposit" min="0" required>
+                </div>
+            </div>
+            <div class="field">
+                <label for="image">Equipment Image</label>
+                <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg,.webp" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Equipment</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>Your Equipment</h2>
+        <div class="card-grid">
+            {% for item in equipment_list %}
+                <article class="equipment-card compact-card">
+                    <img src="{{ url_for('uploaded_file', filename=item.image) }}" alt="{{ item.name }}">
+                    <div class="equipment-body">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.description }}</p>
+                        <p><strong>Rent/Day:</strong> Rs. {{ '%.2f'|format(item.rent_per_day) }}</p>
+                        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                        <p><strong>Max Days:</strong> {{ item.max_days }}</p>
+                        <p><strong>Deposit:</strong> Rs. {{ '%.2f'|format(item.deposit) }}</p>
+                        <div class="card-actions">
+                            <a class="btn btn-outline btn-small" href="{{ url_for('edit_equipment', equipment_id=item.id) }}">Edit</a>
+                            <form method="POST" action="{{ url_for('delete_equipment', equipment_id=item.id) }}" onsubmit="return confirm('Delete this equipment item?');">
+                                <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            {% else %}
+                <p class="empty-copy">No equipment added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

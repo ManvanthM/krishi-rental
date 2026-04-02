@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Login | Krishi Equipment Rental System{% endblock %}
+{% block content %}
+<section class="hero hero-grid">
+    <div class="hero-copy">
+        <span class="eyebrow">Farm Rental Workflow</span>
+        <h1>Manage equipment rental from booking to quality check.</h1>
+        <p>Role-based access for Admin, Producer, Farmer, and QC teams with stock, returns, and overdue alert tracking.
+        </p>
+        <div class="info-card-grid">
+            <article class="mini-card">
+                <h3>Admin</h3>
+                <p>Add producers, review farmers, and monitor overdue returns.</p>
+            </article>
+            <article class="mini-card">
+                <h3>Producer</h3>
+                <p>List equipment, manage quality checkers, and oversee inventory.</p>
+            </article>
+            <article class="mini-card">
+                <h3>Farmer</h3>
+                <p>Search equipment, rent by date, and submit return requests.</p>
+            </article>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Login</h2>
+        <form method="POST" class="validated-form">
+            <div class="field">
+                <label for="role">Login as</label>
+                <select name="role" id="role" required>
+                    <option value="">Select role</option>
+                    <option value="admin">Admin</option>
+                    <option value="producer">Producer</option>
+                    <option value="farmer">Farmer</option>
+                    <option value="qc">Quality Checker</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter email" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+
+        <p class="helper-text">New farmer? <a href="{{ url_for('register_farmer') }}">Create your account</a></p>
+    </div>
+</section>
+{% endblock %}

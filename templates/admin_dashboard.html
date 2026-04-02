@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Admin Console</span>
+    <h1>System Overview</h1>
+    <p>Track producers, farmers, and overdue rentals from a single dashboard.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span>Total Producers</span>
+        <h2>{{ producer_count }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Total Farmers</span>
+        <h2>{{ farmer_count }}</h2>
+    </article>
+    <article class="stat-card alert-card">
+        <span>Overdue Returns</span>
+        <h2>{{ overdue_count }}</h2>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="section-head">
+        <h2>Overdue Farmers</h2>
+        <a class="btn btn-outline" href="{{ url_for('admin_alerts') }}">View Full Alert List</a>
+    </div>
+    {% if overdue_rentals %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Farmer</th>
+                        <th>Phone</th>
+                        <th>Equipment</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in overdue_rentals %}
+                        <tr>
+                            <td>{{ rental.farmer_name }}</td>
+                            <td>{{ rental.phone }}</td>
+                            <td>{{ rental.equipment_name }}</td>
+                            <td>{{ rental.to_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-copy">No overdue rentals at the moment.</p>
+    {% endif %}
+</section>
+{% endblock %}

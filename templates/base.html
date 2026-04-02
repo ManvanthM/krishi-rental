@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Krishi Equipment Rental System{% endblock %}</title>
+    <!-- System fonts used, no external fonts needed -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav-wrap">
+            <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}" class="brand">
+                <span class="brand-mark">KES</span>
+                <span>
+                    <strong>Krishi Equipment</strong>
+                    <small>Rental System</small>
+                </span>
+            </a>
+            <nav class="nav-links">
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('admin_producers') }}">Producers</a>
+                    <a href="{{ url_for('admin_farmers') }}">Farmers</a>
+                    <a href="{{ url_for('admin_alerts') }}">Alerts</a>
+                {% elif session.get('role') == 'producer' %}
+                    <a href="{{ url_for('producer_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('producer_equipment') }}">Equipment</a>
+                    <a href="{{ url_for('producer_qc') }}">Quality Checkers</a>
+                {% elif session.get('role') == 'farmer' %}
+                    <a href="{{ url_for('farmer_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('farmer_equipment') }}">Browse Equipment</a>
+                    <a href="{{ url_for('farmer_rentals') }}">My Rentals</a>
+                {% elif session.get('role') == 'qc' %}
+                    <a href="{{ url_for('qc_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('qc_returns') }}">Returns</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('register_farmer') }}">Farmer Register</a>
+                {% endif %}
+            </nav>
+            <div class="nav-actions">
+                {% if session.get('name') %}
+                    <span class="user-pill">{{ session.get('name') }} | {{ session.get('role')|upper }}</span>
+                    <a class="btn btn-outline" href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="page-shell container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-stack">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-wrap">
+            <p>Krishi Equipment Rental System helps producers, farmers, and QC teams manage equipment rentals smoothly.</p>
+            <div id="google_translate_element"></div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

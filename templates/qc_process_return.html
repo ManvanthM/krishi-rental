@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Process Return{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">QC Processing</span>
+    <h1>Inspect Return: {{ rental.equipment_name }}</h1>
+    <p>Use the delay and damage details below to complete the return review.</p>
+</section>
+
+<section class="split-layout">
+    <div class="panel">
+        <h2>Rental Summary</h2>
+        <ul class="meta-list">
+            <li>Farmer: {{ rental.farmer_name }}</li>
+            <li>From Date: {{ rental.from_date }}</li>
+            <li>Due Date: {{ rental.to_date }}</li>
+            <li>Return Request Date: {{ rental.returned_on }}</li>
+            <li>Deposit Paid: Rs. {{ '%.2f'|format(rental.deposit) }}</li>
+            <li>Extra Days: {{ extra_days }}</li>
+            <li>Base Fine: Rs. {{ '%.2f'|format(base_fine) }}</li>
+        </ul>
+    </div>
+
+    <div class="panel">
+        <h2>QC Decision</h2>
+        <form method="POST" class="validated-form">
+            <div class="field">
+                <label for="action">Action</label>
+                <select name="action" id="action" required>
+                    <option value="">Select decision</option>
+                    <option value="accept">Accept Return</option>
+                    <option value="reject">Reject Return</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="damage_percent">Damage Percentage</label>
+                <input type="number" name="damage_percent" id="damage_percent" min="0" max="100" value="0" required>
+            </div>
+            <div class="field">
+                <label for="damage_cost">Damage Cost (Rs.)</label>
+                <input type="number" step="0.01" name="damage_cost" id="damage_cost" min="0" value="0">
+            </div>
+            <div class="field">
+                <label for="qc_notes">Remarks</label>
+                <textarea name="qc_notes" id="qc_notes" rows="4" placeholder="Inspection notes"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit QC Decision</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

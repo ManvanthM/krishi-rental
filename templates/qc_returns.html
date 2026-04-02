@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}QC Returns{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Quality Checker Module</span>
+    <h1>Returned Equipment Requests</h1>
+    <p>Accept or reject returns after checking delay, damage level, and deposit rules.</p>
+</section>
+
+<section class="panel">
+    <h2>Pending Requests</h2>
+    <div class="card-grid">
+        {% for rental in pending_rentals %}
+            <article class="equipment-card compact-card">
+                <img src="{{ url_for('uploaded_file', filename=rental.image) }}" alt="{{ rental.equipment_name }}">
+                <div class="equipment-body">
+                    <div class="card-topline">
+                        <span class="badge badge-status">{{ rental.status }}</span>
+                        <span class="badge">{{ rental.returned_on or 'Awaiting date' }}</span>
+                    </div>
+                    <h3>{{ rental.equipment_name }}</h3>
+                    <ul class="meta-list">
+                        <li>Farmer: {{ rental.farmer_name }}</li>
+                        <li>Phone: {{ rental.phone }}</li>
+                        <li>Due Date: {{ rental.to_date }}</li>
+                        <li>Deposit: Rs. {{ '%.2f'|format(rental.deposit) }}</li>
+                    </ul>
+                    <a class="btn btn-primary btn-small" href="{{ url_for('qc_process_return', rental_id=rental.id) }}">Process Return</a>
+                </div>
+            </article>
+        {% else %}
+            <p class="empty-copy">No return requests are waiting for QC.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Recently Processed</h2>
+    {% if processed_rentals %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Farmer</th>
+                        <th>Equipment</th>
+                        <th>Status</th>
+                        <th>Fine</th>
+                        <th>Damage Cost</th>
+                        <th>Refund</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rental in processed_rentals %}
+                        <tr>
+                            <td>{{ rental.farmer_name }}</td>
+                            <td>{{ rental.equipment_name }}</td>
+                            <td>{{ rental.status }}</td>
+                            <td>Rs. {{ '%.2f'|format(rental.fine_amount or 0) }}</td>
+                            <td>Rs. {{ '%.2f'|format(rental.damage_cost or 0) }}</td>
+                            <td>Rs. {{ '%.2f'|format(rental.refund_amount or 0) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="empty-copy">No processed returns yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

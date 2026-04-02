@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Producer Dashboard{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Producer Workspace</span>
+    <h1>Welcome, {{ session.get('name') }}</h1>
+    <p>Manage your listed equipment, active rentals, and assigned quality checkers.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span>Equipment Items</span>
+        <h2>{{ equipment_count }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Active Rentals</span>
+        <h2>{{ active_rentals }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Quality Checkers</span>
+        <h2>{{ qc_count }}</h2>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="section-head">
+        <h2>Recently Added Equipment</h2>
+        <a class="btn btn-outline" href="{{ url_for('producer_equipment') }}">Manage Equipment</a>
+    </div>
+    <div class="card-grid">
+        {% for item in recent_equipment %}
+            <article class="simple-card">
+                <h3>{{ item.name }}</h3>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Rent/Day: Rs. {{ '%.2f'|format(item.rent_per_day) }}</p>
+                <p>Deposit: Rs. {{ '%.2f'|format(item.deposit) }}</p>
+            </article>
+        {% else %}
+            <p class="empty-copy">No equipment has been added yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
