@@ -349,7 +349,7 @@ def admin_dashboard():
             """
             SELECT COUNT(*) AS total
             FROM rentals
-            WHERE status = 'Rented' AND to_date < CURDATE()
+            WHERE status = 'Rented' AND to_date < CURRENT_DATE
             """,
             fetchone=True,
         )["total"]
@@ -360,7 +360,7 @@ def admin_dashboard():
             FROM rentals
             INNER JOIN users ON rentals.farmer_id = users.id
             INNER JOIN equipment ON rentals.equipment_id = equipment.id
-            WHERE rentals.status = 'Rented' AND rentals.to_date < CURDATE()
+            WHERE rentals.status = 'Rented' AND rentals.to_date < CURRENT_DATE
             ORDER BY rentals.to_date ASC
             """,
             fetchall=True,
