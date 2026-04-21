@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% block title %}Krishi Equipment Rental System{% endblock %}
+{% block body_class %}landing-body public-body{% endblock %}
+{% block header_class %}site-header-public site-header-home{% endblock %}
+{% block page_shell_class %}landing-shell{% endblock %}
+{% block footer_class %}site-footer-home{% endblock %}
+{% block content %}
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="lp-hero">
+    <div class="container lp-hero__inner">
+
+        <!-- Left column -->
+        <div class="lp-hero__text">
+            <span class="lp-chip">
+                <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13" aria-hidden="true">
+                    <path
+                        d="M10 2C6.5 2 4 5.5 4 9c0 2.8 1.3 5.2 3.3 6.7L7 18h6l-.3-2.3C14.7 14.2 16 11.8 16 9c0-3.5-2.5-7-6-7zm0 2c2.4 0 4 2.6 4 5 0 1.9-.8 3.6-2.1 4.8l-.4.4-.2 1.8H8.7l-.2-1.8-.4-.4C6.8 12.6 6 10.9 6 9c0-2.4 1.6-5 4-5z" />
+                </svg>
+                Smart Agricultural Rental Platform
+            </span>
+
+            <h1 class="lp-hero__heading">Rent the Right Farm Equipment, Right When You Need It.</h1>
+
+            <p class="lp-hero__lead">Krishi connects farmers with quality agricultural equipment &mdash; tractors,
+                harvesters, irrigation rigs, and more &mdash; through a transparent, role-based rental platform built
+                for Indian agriculture.</p>
+
+            <div class="lp-hero__actions">
+                <a class="btn btn-primary" href="{{ url_for('login') }}">
+                    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                        <path
+                            d="M3 14a3 3 0 106 0 3 3 0 00-6 0zm10 1.5a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zM5 8h7l2 4H5V8zm-2 0V6h2V4h6l2 4H3z" />
+                    </svg>
+                    Enter Login Portal
+                </a>
+                <a class="btn btn-outline" href="{{ url_for('register_farmer') }}">Register as Farmer</a>
+            </div>
+
+            <!-- Stats bar -->
+            <div class="lp-stats">
+                <div class="lp-stat">
+                    <strong>4</strong>
+                    <span>User Roles</span>
+                </div>
+                <div class="lp-stat-divider"></div>
+                <div class="lp-stat">
+                    <strong>Live</strong>
+                    <span>Equipment Inventory</span>
+                </div>
+                <div class="lp-stat-divider"></div>
+                <div class="lp-stat">
+                    <strong>QC</strong>
+                    <span>Verified Returns</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column — visual stage -->
+        <div class="lp-hero__visual">
+            <img src="{{ url_for('static', filename='images/tractor.jpg') }}" alt="Farm Image" class="hero-side-image">
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════ WHY KRISHI ═══════════════════════ -->
+<section class="lp-section" id="workflow">
+    <div class="container">
+
+        <div class="lp-section-head">
+            <span class="lp-eyebrow">Why Krishi Platform</span>
+            <h2>Built for the Field, Not Just a Desk.</h2>
+            <p>From equipment discovery to deposit resolution &mdash; every step is tracked, visible, and manageable by
+                the right person.</p>
+        </div>
+
+        <div class="lp-features">
+            <div class="lp-feature">
+                <div class="lp-feature__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" width="28" height="28" aria-hidden="true">
+                        <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.5C17.5 22.15 21 17.25 21 12V6l-9-4z" />
+                        <polyline points="9 12 11 14 15 10" />
+                    </svg>
+                </div>
+                <div class="lp-feature__body">
+                    <strong>Role-Based Access</strong>
+                    <p>Admins, producers, farmers, and QC inspectors each get a focused workspace tailored to their
+                        responsibilities.</p>
+                </div>
+            </div>
+
+            <div class="lp-feature">
+                <div class="lp-feature__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" width="28" height="28" aria-hidden="true">
+                        <rect x="9" y="2" width="6" height="4" rx="1" />
+                        <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+                        <line x1="8" y1="11" x2="16" y2="11" />
+                        <line x1="8" y1="15" x2="13" y2="15" />
+                    </svg>
+                </div>
+                <div class="lp-feature__body">
+                    <strong>Rental Control</strong>
+                    <p>Date limits, rental deposits, and return status remain fully visible from the first booking
+                        through the final QC review.</p>
+                </div>
+            </div>
+
+            <div class="lp-feature">
+                <div class="lp-feature__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" width="28" height="28" aria-hidden="true">
+                        <rect x="3" y="12" width="4" height="9" />
+                        <rect x="10" y="7" width="4" height="14" />
+                        <rect x="17" y="3" width="4" height="18" />
+                        <line x1="2" y1="21" x2="22" y2="21" />
+                    </svg>
+                </div>
+                <div class="lp-feature__body">
+                    <strong>Operational Clarity</strong>
+                    <p>Dashboards surface overdue returns, equipment status, and inventory movement so nothing falls
+                        through the cracks.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════ ROLES ═══════════════════════ -->
+<section class="lp-section lp-section--alt" id="roles">
+    <div class="container">
+
+        <div class="lp-section-head lp-section-head--center">
+            <span class="lp-eyebrow">Platform Roles</span>
+            <h2>One System. Four Focused Workflows.</h2>
+            <p>The same backend logic stays intact while each role gets a tailored front-end experience designed around
+                their daily tasks.</p>
+        </div>
+
+        <div class="lp-roles">
+            <div class="lp-role">
+                <div class="lp-role__icon lp-role__icon--admin">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                    </svg>
+                </div>
+                <span class="lp-role__num">01</span>
+                <h3>Admin</h3>
+                <p>Monitor producers, manage farmers, oversee all equipment, and resolve overdue returns from one
+                    control layer.</p>
+            </div>
+
+            <div class="lp-role">
+                <div class="lp-role__icon lp-role__icon--producer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <rect x="2" y="7" width="20" height="14" rx="2" />
+                        <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+                        <line x1="12" y1="12" x2="12" y2="16" />
+                        <line x1="10" y1="14" x2="14" y2="14" />
+                    </svg>
+                </div>
+                <span class="lp-role__num">02</span>
+                <h3>Producer</h3>
+                <p>Add equipment, manage stock, review active rentals, and assign quality checkers from one dedicated
+                    dashboard.</p>
+            </div>
+
+            <div class="lp-role">
+                <div class="lp-role__icon lp-role__icon--farmer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <circle cx="7" cy="17" r="3" />
+                        <circle cx="17" cy="18" r="2" />
+                        <path d="M13 8h5l2 5H10V8h3z" />
+                        <rect x="10" y="5" width="4" height="4" rx="0.5" />
+                        <line x1="15" y1="8" x2="15" y2="5" />
+                    </svg>
+                </div>
+                <span class="lp-role__num">03</span>
+                <h3>Farmer</h3>
+                <p>Browse available equipment, compare rental costs, and complete bookings through a simple guided flow.
+                </p>
+            </div>
+
+            <div class="lp-role">
+                <div class="lp-role__icon lp-role__icon--qc">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        <line x1="8" y1="11" x2="14" y2="11" />
+                        <line x1="11" y1="8" x2="11" y2="14" />
+                    </svg>
+                </div>
+                <span class="lp-role__num">04</span>
+                <h3>Quality Checker</h3>
+                <p>Process equipment returns, assess condition, calculate penalties, and finalise deposit outcomes with
+                    clear decision support.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+<section class="lp-section" id="how">
+    <div class="container">
+
+        <div class="lp-section-head">
+            <span class="lp-eyebrow">How It Works</span>
+            <h2>From Homepage to Harvest-Ready Equipment.</h2>
+        </div>
+
+        <div class="lp-steps">
+            <div class="lp-step">
+                <div class="lp-step__num">1</div>
+                <div class="lp-step__body">
+                    <strong>Explore</strong>
+                    <p>Visit the homepage, understand the platform roles, and choose how you would like to get started.
+                    </p>
+                </div>
+            </div>
+
+            <div class="lp-step-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" width="22" height="22">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
+            </div>
+
+            <div class="lp-step">
+                <div class="lp-step__num">2</div>
+                <div class="lp-step__body">
+                    <strong>Authenticate</strong>
+                    <p>Select your role &mdash; farmer, producer, admin, or QC &mdash; and sign in through the login
+                        portal.</p>
+                </div>
+            </div>
+
+            <div class="lp-step-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" width="22" height="22">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
+            </div>
+
+            <div class="lp-step">
+                <div class="lp-step__num">3</div>
+                <div class="lp-step__body">
+                    <strong>Operate</strong>
+                    <p>Use your role-specific dashboard to rent, manage inventory, inspect returns, or monitor the
+                        platform.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════ EQUIPMENT STRIP ═══════════════════════ -->
+<section class="lp-section lp-section--alt" id="equipment">
+    <div class="container">
+        <div class="lp-section-head lp-section-head--center">
+            <span class="lp-eyebrow">Equipment Categories</span>
+            <h2>All the Gear Your Farm Needs.</h2>
+        </div>
+
+        <div class="lp-equip-grid">
+            <div class="lp-equip-card">
+                <div class="lp-equip-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <circle cx="7" cy="17" r="3" />
+                        <circle cx="17" cy="18" r="2" />
+                        <path d="M13 8h5l2 5H10V8h3z" />
+                        <rect x="10" y="5" width="4" height="4" rx="0.5" />
+                        <line x1="15" y1="8" x2="15" y2="5" />
+                    </svg>
+                </div>
+                <strong>Tractors</strong>
+                <p>Powerful field tractors for ploughing and transport</p>
+            </div>
+
+            <div class="lp-equip-card">
+                <div class="lp-equip-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <rect x="3" y="8" width="18" height="10" rx="2" />
+                        <path d="M7 8V5a2 2 0 012-2h6a2 2 0 012 2v3" />
+                        <line x1="12" y1="12" x2="12" y2="14" />
+                    </svg>
+                </div>
+                <strong>Harvesters</strong>
+                <p>Combine harvesters for paddy, wheat, and maize</p>
+            </div>
+
+            <div class="lp-equip-card">
+                <div class="lp-equip-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <path
+                            d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        <circle cx="12" cy="12" r="4" />
+                    </svg>
+                </div>
+                <strong>Irrigation</strong>
+                <p>Drip lines, sprinklers, and pump sets for watering</p>
+            </div>
+
+            <div class="lp-equip-card">
+                <div class="lp-equip-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <path d="M12 2C8 2 5 6 5 10c0 3.3 1.6 6.1 4 7.8V20h6v-2.2c2.4-1.7 4-4.5 4-7.8 0-4-3-8-7-8z" />
+                        <line x1="9" y1="17" x2="15" y2="17" />
+                    </svg>
+                </div>
+                <strong>Sprayers</strong>
+                <p>Boom sprayers and mist blowers for crop protection</p>
+            </div>
+
+            <div class="lp-equip-card">
+                <div class="lp-equip-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <ellipse cx="12" cy="10" rx="7" ry="4" />
+                        <path d="M5 10v4c0 2.2 3.1 4 7 4s7-1.8 7-4v-4" />
+                    </svg>
+                </div>
+                <strong>Seeders</strong>
+                <p>Precision seed drills and broadcast seeders</p>
+            </div>
+
+            <div class="lp-equip-card">
+                <div class="lp-equip-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round" width="32" height="32" aria-hidden="true">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                </div>
+                <strong>Paddy Equipment</strong>
+                <p>Transplanters, threshers, and rice mill attachments</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════ CTA ═══════════════════════ -->
+<section class="lp-section">
+    <div class="container">
+        <div class="lp-cta">
+            <div class="lp-cta__text">
+                <span class="lp-eyebrow">Ready to Start?</span>
+                <h2>Join the Krishi Rental Platform Today.</h2>
+                <p>Farmers can register for free and start browsing available equipment immediately after account
+                    approval.</p>
+            </div>
+            <div class="lp-cta__actions">
+                <a class="btn btn-primary" href="{{ url_for('login') }}">Go to Login</a>
+                <a class="btn btn-outline" href="{{ url_for('register_farmer') }}">Create Farmer Account</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

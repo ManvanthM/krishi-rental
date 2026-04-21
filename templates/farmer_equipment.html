@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Browse Equipment{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Farmer Module</span>
+    <h1>Available Equipment</h1>
+    <p>Search by equipment name or filter by daily rent before booking.</p>
+</section>
+
+<section class="panel">
+    <form method="GET" class="filter-bar">
+        <div class="field">
+            <label for="search">Search</label>
+            <input type="text" name="search" id="search" value="{{ search }}" placeholder="Equipment name">
+        </div>
+        <div class="field">
+            <label for="min_price">Min Price</label>
+            <input type="number" step="0.01" name="min_price" id="min_price" value="{{ min_price }}">
+        </div>
+        <div class="field">
+            <label for="max_price">Max Price</label>
+            <input type="number" step="0.01" name="max_price" id="max_price" value="{{ max_price }}">
+        </div>
+        <div class="filter-actions">
+            <button type="submit" class="btn btn-primary">Apply</button>
+            <a class="btn btn-outline" href="{{ url_for('farmer_equipment') }}">Reset</a>
+        </div>
+    </form>
+</section>
+
+<section class="card-grid">
+    {% for item in equipment_list %}
+        <article class="equipment-card">
+            <img src="{{ url_for('uploaded_file', filename=item.image) }}" alt="{{ item.name }}">
+            <div class="equipment-body">
+                <div class="card-topline">
+                    <span class="badge">{{ item.producer_name }}</span>
+                    <span class="badge">{{ item.quantity }} in stock</span>
+                </div>
+                <h2>{{ item.name }}</h2>
+                <p>{{ item.description }}</p>
+                <ul class="meta-list">
+                    <li>Rent per day: Rs. {{ '%.2f'|format(item.rent_per_day) }}</li>
+                    <li>Deposit: Rs. {{ '%.2f'|format(item.deposit) }}</li>
+                    <li>Max rental days: {{ item.max_days }}</li>
+                    <li>Producer phone: {{ item.producer_phone }}</li>
+                </ul>
+                <a class="btn btn-primary" href="{{ url_for('rent_equipment', equipment_id=item.id) }}">Rent Equipment</a>
+            </div>
+        </article>
+    {% else %}
+        <article class="panel empty-state">
+            <p>No equipment matched your search or price range.</p>
+        </article>
+    {% endfor %}
+</section>
+{% endblock %}

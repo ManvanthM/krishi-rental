@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Producer Dashboard{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Producer Workspace</span>
+    <h1>Welcome, {{ session.get('name') }}</h1>
+    <p>Manage your listed equipment, active rentals, and assigned quality checkers.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span>Equipment Items</span>
+        <h2>{{ equipment_count }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Active Rentals</span>
+        <h2>{{ active_rentals }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Quality Checkers</span>
+        <h2>{{ qc_count }}</h2>
+    </article>
+</section>
+
+{% if overdue_rentals %}
+<section class="panel" style="border-left: 4px solid #d32f2f;">
+    <div class="section-head">
+        <h2 style="color: #d32f2f;">Overdue Rentals Alerts</h2>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Equipment</th>
+                    <th>Farmer</th>
+                    <th>Contact</th>
+                    <th>Days Overdue</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in overdue_rentals %}
+                <tr>
+                    <td><strong>{{ item.equipment_name }}</strong></td>
+                    <td>{{ item.farmer_name }}</td>
+                    <td>{{ item.phone }}<br><small>{{ item.farmer_email }}</small></td>
+                    <td style="color: #d32f2f; font-weight: bold;">{{ item.days_overdue }} days</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('producer_send_alert', rental_id=item.id) }}">
+                            <button type="submit" class="btn btn-primary" style="background-color: #d32f2f; border-color: #d32f2f;">
+                                Send Warning Email
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+<section class="panel">
+    <div class="section-head">
+        <h2>Recently Added Equipment</h2>
+        <a class="btn btn-outline" href="{{ url_for('producer_equipment') }}">Manage Equipment</a>
+    </div>
+    <div class="card-grid">
+        {% for item in recent_equipment %}
+            <article class="simple-card">
+                <h3>{{ item.name }}</h3>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Rent/Day: Rs. {{ '%.2f'|format(item.rent_per_day) }}</p>
+                <p>Deposit: Rs. {{ '%.2f'|format(item.deposit) }}</p>
+            </article>
+        {% else %}
+            <p class="empty-copy">No equipment has been added yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

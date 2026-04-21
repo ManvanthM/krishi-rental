@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Farmer Dashboard{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Farmer Workspace</span>
+    <h1>Welcome, {{ session.get('name') }}</h1>
+    <p>Search across all producers, rent equipment, and track your active and returned bookings.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span>Available Equipment</span>
+        <h2>{{ available_equipment }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>Active Rentals</span>
+        <h2>{{ active_rentals }}</h2>
+    </article>
+    <article class="stat-card">
+        <span>In QC Review</span>
+        <h2>{{ in_qc }}</h2>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="section-head">
+        <h2>Featured Equipment</h2>
+        <a class="btn btn-outline" href="{{ url_for('farmer_equipment') }}">Browse All</a>
+    </div>
+    <div class="card-grid">
+        {% for item in featured_equipment %}
+            <article class="equipment-card compact-card">
+                <img src="{{ url_for('uploaded_file', filename=item.image) }}" alt="{{ item.name }}">
+                <div class="equipment-body">
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.description }}</p>
+                    <p><strong>Producer:</strong> {{ item.producer_name }}</p>
+                    <p><strong>Rent/Day:</strong> Rs. {{ '%.2f'|format(item.rent_per_day) }}</p>
+                    <a class="btn btn-primary btn-small" href="{{ url_for('rent_equipment', equipment_id=item.id) }}">Rent Now</a>
+                </div>
+            </article>
+        {% else %}
+            <p class="empty-copy">No equipment is available right now.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

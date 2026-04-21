@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Rent Equipment{% endblock %}
+{% block content %}
+<section class="page-intro">
+    <span class="eyebrow">Rental Checkout</span>
+    <h1>Rent {{ equipment.name }}</h1>
+    <p>Choose a date range, review the rent calculation, and confirm payment details.</p>
+</section>
+
+<section class="split-layout">
+    <div class="panel equipment-summary">
+        <img src="{{ url_for('uploaded_file', filename=equipment.image) }}" alt="{{ equipment.name }}">
+        <h2>{{ equipment.name }}</h2>
+        <p>{{ equipment.description }}</p>
+        <ul class="meta-list">
+            <li>Producer: {{ equipment.producer_name }}</li>
+            <li>Rent/Day: Rs. <span id="rentPerDay">{{ equipment.rent_per_day }}</span></li>
+            <li>Security Deposit: Rs. <span id="depositAmount">{{ equipment.deposit }}</span></li>
+            <li>Available Quantity: {{ equipment.quantity }}</li>
+            <li>Max Rental Days: {{ equipment.max_days }}</li>
+        </ul>
+    </div>
+
+    <div class="panel">
+        <h2>Rental Form</h2>
+        <form method="POST" class="validated-form" id="rentalForm" data-rent-per-day="{{ equipment.rent_per_day }}"
+            data-deposit="{{ equipment.deposit }}" data-max-days="5">
+            <div class="grid-two">
+                <div class="field">
+                    <label for="from_date">From Date</label>
+                    <input type="date" name="from_date" id="from_date" min="{{ today.strftime('%Y-%m-%d') }}" required>
+                </div>
+                <div class="field">
+                    <label for="to_date">To Date</label>
+                    <input type="date" name="to_date" id="to_date" min="{{ today.strftime('%Y-%m-%d') }}" required>
+                </div>
+            </div>
+            <p class="helper-text section-note">Note: Maximum rental period is 5 days.</p>
+
+            <div class="summary-box">
+                <p>Total Days: <strong id="totalDays">0</strong></p>
+                <p>Total Rent: <strong id="totalRent">Rs. 0.00</strong></p>
+                <p>Security Deposit: <strong id="depositDisplay">Rs. {{ '%.2f'|format(equipment.deposit) }}</strong></p>
+            </div>
+
+            <input type="hidden" name="payment_method" id="payment_method" value="">
+
+            <div class="payment-ui">
+                <h3>Select Payment Method</h3>
+                <div class="pay-options">
+                    <div class="pay-card pay-card--interactive" id="pay-upi" onclick="selectPayment('UPI')">
+                        <strong>UPI</strong>
+                        <small>Pay via UPI ID or QR scan</small>
+                    </div>
+                    <div class="pay-card pay-card--interactive" id="pay-card" onclick="selectPayment('Card')">
+                        <strong>Card</strong>
+                        <small>Debit or Credit card</small>
+                    </div>
+                </div>
+
+                <div id="upi-details" class="payment-detail-panel" hidden>
+                    <div class="field">
+                        <label>UPI ID (demo)</label>
+                        <input type="text" placeholder="yourname@upi" id="dummy_upi">
+                    </div>
+                    <p class="helper-text">This is a simulation. No real payment will be charged.</p>
+                </div>
+
+                <div id="card-details" class="payment-detail-panel" hidden>
+                    <div class="grid-two">
+                        <div class="field grid-span-2">
+                            <label>Card Number (demo)</label>
+                            <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" id="dummy_card">
+                        </div>
+                        <div class="field">
+                            <label>Expiry (demo)</label>
+                            <input type="text" placeholder="MM/YY" maxlength="5" id="dummy_expiry">
+                        </div>
+                        <div class="field">
+                            <label>CVV (demo)</label>
+                            <input type="text" placeholder="123" maxlength="3" id="dummy_cvv">
+                        </div>
+                    </div>
+                    <p class="helper-text">This is a simulation. No real payment will be charged.</p>
+                </div>
+            </div>
+
+            <label class="checkbox-line">
+                <input type="checkbox" name="accepted_terms" value="yes" required>
+                <span>I accept the rental terms, payment confirmation, and return policy.</span>
+            </label>
+
+            <div class="card-actions">
+                <button type="submit" class="btn btn-primary">Confirm Rental</button>
+                <a class="btn btn-outline" href="{{ url_for('farmer_equipment') }}">Back</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

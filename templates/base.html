@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Krishi Equipment Rental System{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            const storedTheme = localStorage.getItem("krishi-theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const theme = storedTheme || (prefersDark ? "dark" : "light");
+            document.documentElement.setAttribute("data-theme", theme);
+        })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% block body_class %}{% if session.get('user_id') %}app-body{% else %}public-body{% endif %}{% endblock %}">
+    <header class="site-header {% block header_class %}{% if not session.get('user_id') %}site-header-public{% endif %}{% endblock %}">
+        <div class="container nav-wrap">
+            <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('home') }}" class="brand">
+                <!-- Tractor SVG Logo -->
+                <span class="brand-mark" aria-label="Krishi tractor logo">
+                    <svg class="brand-tractor" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <!-- Rear large wheel -->
+                        <circle cx="16" cy="34" r="10" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                        <circle cx="16" cy="34" r="4"  fill="currentColor" opacity="0.5"/>
+                        <!-- Rear wheel spokes -->
+                        <line x1="16" y1="24" x2="16" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="16" y1="40" x2="16" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="6"  y1="34" x2="10" y2="34" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="22" y1="34" x2="26" y2="34" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <line x1="9"  y1="27" x2="12" y2="30" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <line x1="20" y1="38" x2="23" y2="41" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <line x1="23" y1="27" x2="20" y2="30" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <line x1="12" y1="38" x2="9"  y2="41" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <!-- Front small wheel -->
+                        <circle cx="38" cy="38" r="6" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                        <circle cx="38" cy="38" r="2.5" fill="currentColor" opacity="0.45"/>
+                        <!-- Body / chassis -->
+                        <path d="M26 34 H42 V30 H38 L34 22 H26 V34 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+                        <!-- Hood / engine block -->
+                        <rect x="26" y="22" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <!-- Exhaust pipe -->
+                        <path d="M36 22 V15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M34 15 H38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <!-- Cabin / cab -->
+                        <rect x="28" y="24" width="8" height="6" rx="1.5" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.6"/>
+                        <!-- Steering wheel hint -->
+                        <circle cx="32" cy="27" r="1.5" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.7"/>
+                        <!-- Axle connector -->
+                        <line x1="26" y1="34" x2="32" y2="34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="32" y1="34" x2="32" y2="38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span>
+                    <strong>Krishi Equipment</strong>
+                    <small>Rental System</small>
+                </span>
+            </a>
+            <nav class="nav-links">
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('admin_producers') }}">Producers</a>
+                    <a href="{{ url_for('admin_farmers') }}">Farmers</a>
+                    <a href="{{ url_for('admin_alerts') }}">Alerts</a>
+                {% elif session.get('role') == 'producer' %}
+                    <a href="{{ url_for('producer_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('producer_equipment') }}">Equipment</a>
+                    <a href="{{ url_for('producer_qc') }}">Quality Checkers</a>
+                {% elif session.get('role') == 'farmer' %}
+                    <a href="{{ url_for('farmer_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('farmer_equipment') }}">Browse Equipment</a>
+                    <a href="{{ url_for('farmer_rentals') }}">My Rentals</a>
+                {% elif session.get('role') == 'qc' %}
+                    <a href="{{ url_for('qc_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('qc_returns') }}">Returns</a>
+                {% else %}
+                    <a href="{{ url_for('home') }}">Home</a>
+                    <a href="{{ url_for('home') }}#roles">Roles</a>
+                    <a href="{{ url_for('home') }}#workflow">Workflow</a>
+                {% endif %}
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false" data-theme-toggle>
+                    <!-- Sun / Moon SVG icon -->
+                    <span class="theme-toggle__icon" aria-hidden="true">
+                        <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.42 1.42l-.71.7a1 1 0 01-1.42-1.41l.71-.71zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zM3.78 3.78a1 1 0 011.42 0l.7.71A1 1 0 014.49 5.9l-.71-.71a1 1 0 010-1.41zM3 10a1 1 0 110 2H2a1 1 0 110-2h1zm1.49 5.51l.71-.7a1 1 0 011.41 1.41l-.7.71a1 1 0 01-1.42-1.42zm9.31-.7a1 1 0 011.41 0l.71.7a1 1 0 01-1.42 1.42l-.7-.71a1 1 0 010-1.41zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm0-10a4 4 0 100 8 4 4 0 000-8z"/>
+                        </svg>
+                        <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="display:none">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </span>
+                    <span class="theme-toggle__label">Theme</span>
+                </button>
+                {% if session.get('name') %}
+                    <span class="user-pill">{{ session.get('name') }} | {{ session.get('role')|upper }}</span>
+                    <a class="btn btn-outline" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a class="btn btn-outline" href="{{ url_for('login') }}">Login</a>
+                    <a class="btn btn-primary" href="{{ url_for('register_farmer') }}">Farmer Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="{% block page_shell_class %}page-shell container{% endblock %}">
+        <div class="flash-shell container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <section class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </section>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer {% block footer_class %}{% endblock %}">
+        <div class="container footer-wrap">
+            <p>Krishi Equipment Rental System &mdash; Empowering Indian farmers with smart, transparent agricultural equipment access.</p>
+            <div id="google_translate_element"></div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

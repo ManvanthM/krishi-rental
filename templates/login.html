@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Login | Krishi Equipment Rental System{% endblock %}
+{% block content %}
+<section class="login-shell">
+    <div class="login-layout">
+        <aside class="login-aside">
+            <span class="eyebrow">Secure Access</span>
+            <h1>Enter the rental workspace that matches your role.</h1>
+            <p>Use the new landing page as the public entry point, then sign in here to continue into the existing equipment rental system.</p>
+            <ul class="login-notes">
+                <li>Admins monitor producers, farmers, and alerts.</li>
+                <li>Producers manage equipment and QC assignments.</li>
+                <li>Farmers browse listings and submit rentals.</li>
+                <li>Quality checkers process equipment returns.</li>
+            </ul>
+            <div class="landing-actions">
+                <a class="btn btn-outline" href="{{ url_for('home') }}">Back to Home</a>
+                <a class="btn btn-outline" href="{{ url_for('register_farmer') }}">Farmer Register</a>
+            </div>
+        </aside>
+
+        <section class="panel login-panel">
+            <div class="login-panel__head">
+                <span class="landing-chip">Account Login</span>
+                <h2>Sign in</h2>
+                <p>Select your role and continue to the right dashboard.</p>
+            </div>
+
+            <form method="POST" class="validated-form login-form">
+                <div class="field">
+                    <label for="role">Login as</label>
+                    <select name="role" id="role" required>
+                        <option value="">Select role</option>
+                        <option value="admin">Admin</option>
+                        <option value="producer">Producer</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="qc">Quality Checker</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter email" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+
+            <p class="helper-text login-helper">New farmer? <a href="{{ url_for('register_farmer') }}">Create your account</a></p>
+        </section>
+    </div>
+</section>
+{% endblock %}
