@@ -2,10 +2,17 @@ import os
 import uuid
 from dotenv import load_dotenv
 
+import time
+from supabase import create_client, Client
 # Load environment variables from .env file
 load_dotenv()
 from datetime import date, datetime
 from functools import wraps
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -83,7 +90,6 @@ def allowed_file(filename):
 
 
 def save_upload(file_obj, prefix):
-    """Persist an uploaded file and return the stored filename."""
     if not file_obj or file_obj.filename == "":
         return None
 
@@ -91,9 +97,22 @@ def save_upload(file_obj, prefix):
         raise ValueError("Only PNG, JPG, JPEG, WEBP, or PDF files are allowed.")
 
     extension = file_obj.filename.rsplit(".", 1)[1].lower()
-    filename = f"{prefix}_{uuid.uuid4().hex}.{extension}"
-    file_obj.save(os.path.join(app.config["UPLOAD_FOLDER"], secure_filename(filename)))
-    return filename
+    filename = f"{prefix}_{int(time.time())}_{uuid.uuid4().hex}.{extension}"
+
+    file_data = file_obj.read()
+
+    supabase.storage.from_("images").upload(
+        filename,
+        file_data,
+        {"content-type": file_obj.content_type}
+    )
+
+    public_url = supabase.storage.from_("images").get_public_url(filename)
+
+    if isinstance(public_url, dict):
+        public_url = public_url.get("publicUrl") or public_url.get("public_url")
+
+    return public_url
 
 
 def parse_date(value):
@@ -327,9 +346,6 @@ def dashboard():
     return redirect_to_dashboard()
 
 
-@app.route("/uploads/<path:filename>")
-def uploaded_file(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 @app.route("/admin/dashboard")
@@ -349,7 +365,7 @@ def admin_dashboard():
             """
             SELECT COUNT(*) AS total
             FROM rentals
-            WHERE status = 'Rented' AND to_date < CURDATE()
+            WHERE status = 'Rented' AND to_date < CURRENT_DATE
             """,
             fetchone=True,
         )["total"]
@@ -360,7 +376,7 @@ def admin_dashboard():
             FROM rentals
             INNER JOIN users ON rentals.farmer_id = users.id
             INNER JOIN equipment ON rentals.equipment_id = equipment.id
-            WHERE rentals.status = 'Rented' AND rentals.to_date < CURDATE()
+            WHERE rentals.status = 'Rented' AND rentals.to_date < CURRENT_DATE
             ORDER BY rentals.to_date ASC
             """,
             fetchall=True,

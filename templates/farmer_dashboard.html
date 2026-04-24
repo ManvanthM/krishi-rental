@@ -30,7 +30,7 @@
     <div class="card-grid">
         {% for item in featured_equipment %}
             <article class="equipment-card compact-card">
-                <img src="{{ url_for('uploaded_file', filename=item.image) }}" alt="{{ item.name }}">
+                <img src="{{ item.image }}" alt="{{ item.name }}">
                 <div class="equipment-body">
                     <h3>{{ item.name }}</h3>
                     <p>{{ item.description }}</p>

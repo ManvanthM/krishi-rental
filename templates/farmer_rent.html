@@ -9,7 +9,7 @@
 
 <section class="split-layout">
     <div class="panel equipment-summary">
-        <img src="{{ url_for('uploaded_file', filename=equipment.image) }}" alt="{{ equipment.name }}">
+        <img src="{{ equipment.image }}" alt="{{ equipment.name }}">
         <h2>{{ equipment.name }}</h2>
         <p>{{ equipment.description }}</p>
         <ul class="meta-list">

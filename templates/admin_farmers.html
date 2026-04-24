@@ -29,7 +29,7 @@
                             <td>{{ farmer.aadhaar }}</td>
                             <td>
                                 {% if farmer.aadhaar_image %}
-                                    <a href="{{ url_for('uploaded_file', filename=farmer.aadhaar_image) }}" target="_blank">View Upload</a>
+                                    <a href="{{ farmer.aadhaar_image }}" target="_blank">View Upload</a>
                                 {% else %}
                                     Not Uploaded
                                 {% endif %}

@@ -12,7 +12,7 @@
     <div class="card-grid">
         {% for rental in pending_rentals %}
             <article class="equipment-card compact-card">
-                <img src="{{ url_for('uploaded_file', filename=rental.image) }}" alt="{{ rental.equipment_name }}">
+                <img src="{{ rental.image }}" alt="{{ rental.equipment_name }}">
                 <div class="equipment-body">
                     <div class="card-topline">
                         <span class="badge badge-status">{{ rental.status }}</span>

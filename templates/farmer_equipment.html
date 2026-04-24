@@ -31,7 +31,7 @@
 <section class="card-grid">
     {% for item in equipment_list %}
         <article class="equipment-card">
-            <img src="{{ url_for('uploaded_file', filename=item.image) }}" alt="{{ item.name }}">
+            <img src="{{ item.image }}" alt="{{ item.name }}">
             <div class="equipment-body">
                 <div class="card-topline">
                     <span class="badge">{{ item.producer_name }}</span>

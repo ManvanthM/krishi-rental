@@ -1,0 +1,7 @@
+{
+  "serviceDetails": {
+    "envSpecificDetails": {
+      "startCommand": "gunicorn app:app"
+    }
+  }
+}
