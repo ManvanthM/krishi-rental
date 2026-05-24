@@ -585,6 +585,57 @@ def producer_dashboard():
         overdue_rentals=overdue_rentals,
     )
 
+def send_alert_email(farmer_name, farmer_email, equipment_name, days_overdue):
+    resend_api_key = os.environ.get("RESEND_API_KEY", "")
+    subject = f"URGENT: Delayed Equipment Return - {equipment_name}"
+    
+    if resend_api_key:
+        print("Sending email via Resend API...")
+        import resend
+        resend.api_key = resend_api_key
+        
+        sender_email = os.environ.get("SENDER_EMAIL", "onboarding@resend.dev")
+        if "onboarding@resend.dev" in sender_email or not os.environ.get("SENDER_EMAIL"):
+            sender_email = "Krishi Rental <onboarding@resend.dev>"
+            
+        body_html = f"""
+        <p>Dear {farmer_name},</p>
+        <p>Our records indicate your rental for <strong>'{equipment_name}'</strong> is <strong>{days_overdue}</strong> days overdue.</p>
+        <p>Please return it to the Quality Checker immediately to minimize further late fines.</p>
+        <p>Thank you,<br>Krishi Rental Platform</p>
+        """
+        
+        r = resend.Emails.send({
+            "from": sender_email,
+            "to": farmer_email,
+            "subject": subject,
+            "html": body_html
+        })
+        print("Resend Response ID:", getattr(r, "id", r))
+        return True
+    else:
+        smtp_user = os.environ.get("SMTP_USER", "")
+        if not smtp_user:
+            print("No email configuration found. Simulating email send...")
+            return False
+            
+        print("Sending email via SMTP...")
+        import smtplib
+        from email.message import EmailMessage
+        msg = EmailMessage()
+        msg.set_content(f"Dear {farmer_name},\n\nOur records indicate your rental for '{equipment_name}' is {days_overdue} days overdue. Please return it to the Quality Checker immediately to minimize further late fines.\n\nThank you,\nKrishi Rental Platform")
+        msg['Subject'] = subject
+        msg['From'] = smtp_user
+        msg['To'] = farmer_email
+        
+        server = smtplib.SMTP(os.environ.get("SMTP_SERVER", "smtp.gmail.com"), int(os.environ.get("SMTP_PORT", 587)), timeout=10)
+        server.starttls()
+        server.login(smtp_user, os.environ.get("SMTP_PASS", ""))
+        server.send_message(msg)
+        server.quit()
+        return True
+
+
 @app.route("/producer/send_alert/<int:rental_id>", methods=["POST"])
 @login_required
 @role_required("producer")
@@ -608,37 +659,25 @@ def producer_send_alert(rental_id):
             flash("Invalid or unauthorized alert request.", "danger")
             return redirect(url_for("producer_dashboard"))
         
-        smtp_user = os.environ.get("SMTP_USER", "")
+        farmer_name = rental_data["farmer_name"]
         farmer_email = rental_data["farmer_email"]
         equipment_name = rental_data["equipment_name"]
+        days_overdue = rental_data["days_overdue"]
         
-        print(f"\n--- SIMULATED EMAIL DISPATCH ---")
-        print(f"TO: {farmer_email}")
-        print(f"SUBJECT: URGENT: Delayed Equipment Return - {equipment_name}")
-        print(f"BODY: Dear {rental_data['farmer_name']},\n\nOur records indicate your rental for '{equipment_name}' is {rental_data['days_overdue']} days overdue. Please return it immediately.\n\nThank you,\nKrishi Rental Platform")
-        print(f"--------------------------------\n")
+        print(f"\n--- EMAIL DISPATCH INITIATED ---")
+        print(f"TO: {farmer_email} ({farmer_name})")
+        print(f"EQUIPMENT: {equipment_name}")
+        print(f"DAYS OVERDUE: {days_overdue}")
         
-        if not smtp_user:
-            flash(f"Simulated alert email safely generated on the server for {farmer_email}.", "success")
-        else:
-            import smtplib
-            from email.message import EmailMessage
-            try:
-                msg = EmailMessage()
-                msg.set_content(f"Dear {rental_data['farmer_name']},\n\nOur records indicate your rental for '{equipment_name}' is {rental_data['days_overdue']} days overdue. Please return it to the Quality Checker immediately to minimize further late fines.\n\nThank you,\nKrishi Rental Platform")
-                msg['Subject'] = f"URGENT: Delayed Equipment Return - {equipment_name}"
-                msg['From'] = smtp_user
-                msg['To'] = farmer_email
-                
-                server = smtplib.SMTP(os.environ.get("SMTP_SERVER", "smtp.gmail.com"), int(os.environ.get("SMTP_PORT", 587)), timeout=10)
-                server.starttls()
-                server.login(smtp_user, os.environ.get("SMTP_PASS", ""))
-                server.send_message(msg)
-                server.quit()
+        try:
+            sent_real = send_alert_email(farmer_name, farmer_email, equipment_name, days_overdue)
+            if sent_real:
                 flash(f"Alert email successfully sent to {farmer_email}.", "success")
-            except Exception as e:
-                traceback.print_exc()
-                flash(f"Failed to send real email due to SMTP error: {e}", "danger")
+            else:
+                flash(f"Simulated alert email safely generated on the server for {farmer_email}.", "success")
+        except Exception as e:
+            traceback.print_exc()
+            flash(f"Failed to send email due to SMTP/Resend API error: {e}", "danger")
                 
     except Exception as exc:
         traceback.print_exc()
