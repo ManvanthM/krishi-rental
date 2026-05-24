@@ -1,6 +1,7 @@
 import os
 import uuid
 from dotenv import load_dotenv
+import traceback
 
 import time
 from supabase import create_client, Client
@@ -629,17 +630,19 @@ def producer_send_alert(rental_id):
                 msg['From'] = smtp_user
                 msg['To'] = farmer_email
                 
-                server = smtplib.SMTP(os.environ.get("SMTP_SERVER", "smtp.gmail.com"), int(os.environ.get("SMTP_PORT", 587)))
+                server = smtplib.SMTP(os.environ.get("SMTP_SERVER", "smtp.gmail.com"), int(os.environ.get("SMTP_PORT", 587)), timeout=10)
                 server.starttls()
                 server.login(smtp_user, os.environ.get("SMTP_PASS", ""))
                 server.send_message(msg)
                 server.quit()
                 flash(f"Alert email successfully sent to {farmer_email}.", "success")
             except Exception as e:
+                traceback.print_exc()
                 flash(f"Failed to send real email due to SMTP error: {e}", "danger")
                 
     except Exception as exc:
-        flash(f"Database error while attempting to send alert: {exc}", "danger")
+        traceback.print_exc()
+        flash(f"Error while attempting to send alert: {exc}", "danger")
 
     return redirect(url_for("producer_dashboard"))
 
