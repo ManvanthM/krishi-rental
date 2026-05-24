@@ -640,8 +640,19 @@ def producer_send_alert(rental_id):
                 )
                 
                 with urllib.request.urlopen(req, timeout=10) as response:
-                    res_body = response.read()
+                    res_body = response.read().decode('utf-8')
                     print(f"Webhook response: {res_body}")
+                    
+                    if "Script function not found: doPost" in res_body:
+                        raise Exception("Google Apps Script error: 'doPost' function not found. Make sure you named the function doPost(e) and created a New Deployment.")
+                    
+                    try:
+                        res_json = json.loads(res_body)
+                        if res_json.get("status") != "success":
+                            raise Exception(f"Webhook returned error: {res_json.get('message', 'Unknown error')}")
+                    except json.JSONDecodeError:
+                        if response.getcode() != 200 or "Error" in res_body:
+                            raise Exception("Invalid response from Google Apps Script. Ensure the script is deployed correctly.")
                 
                 flash(f"Alert email successfully sent to {farmer_email}.", "success")
             except Exception as e:
