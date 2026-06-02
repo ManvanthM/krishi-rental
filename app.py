@@ -12,6 +12,7 @@ from functools import wraps
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_STORAGE_BUCKET = os.getenv("SUPABASE_STORAGE_BUCKET", "images")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -23,7 +24,6 @@ from flask import (
     redirect,
     render_template,
     request,
-    send_from_directory,
     session,
     url_for,
 )
@@ -34,16 +34,11 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "krishi-equipment-secret-key")
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "pdf"}
 
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 
 def get_db_connection():
     """Create a PostgreSQL database connection using the DATABASE_URL env variable."""
@@ -97,18 +92,23 @@ def save_upload(file_obj, prefix):
     if not allowed_file(file_obj.filename):
         raise ValueError("Only PNG, JPG, JPEG, WEBP, or PDF files are allowed.")
 
-    extension = file_obj.filename.rsplit(".", 1)[1].lower()
+    safe_filename = secure_filename(file_obj.filename)
+    if not safe_filename:
+        raise ValueError("Invalid upload filename.")
+
+    extension = safe_filename.rsplit(".", 1)[1].lower()
     filename = f"{prefix}_{int(time.time())}_{uuid.uuid4().hex}.{extension}"
+    storage_path = f"{prefix}/{filename}"
 
     file_data = file_obj.read()
 
-    supabase.storage.from_("images").upload(
-        filename,
+    supabase.storage.from_(SUPABASE_STORAGE_BUCKET).upload(
+        storage_path,
         file_data,
-        {"content-type": file_obj.content_type}
+        {"content-type": file_obj.content_type or "application/octet-stream"}
     )
 
-    public_url = supabase.storage.from_("images").get_public_url(filename)
+    public_url = supabase.storage.from_(SUPABASE_STORAGE_BUCKET).get_public_url(storage_path)
 
     if isinstance(public_url, dict):
         public_url = public_url.get("publicUrl") or public_url.get("public_url")
